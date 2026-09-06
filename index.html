@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculater</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+
+    <div class="flex justify-center items-center py-[50px] bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500">
+
+        <div class="flex flex-col border-[1px] border-gray-200 w-[550px] h-[800px] p-[20px] gap-[30px] rounded-[40px] bg-white/30 backdrop-blur-lg border-white/40 shadow-2xl">
+
+            <div class="flex flex-col border-[1px] border-gray-300 w-[500px] h-[500px] rounded-[40px] bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 p-[30px]">
+
+                <div class="">
+                    
+                    <h1 class="flex text-[30px] font-bold"> <img src="/user (1).png" style="height: 35px; width: 35px;">&nbsp; Enter Name</h1> <br>
+                    <input id="name" class=" border-[1px] rounded-[10px] h-[55px] w-[400px] pl-[15px] text-[25px] cursor-pointer bg-white/50 backdrop-blur-lg border-white/10 shadow-xl" type="text" placeholder="Name">
+                </div> <br><br>
+
+                <div>
+                     <h1 class="flex text-[30px] font-bold"> <img src="/birthday-cake.png" style="height: 35px; width: 35px;">&nbsp; Enter Age (years)</h1> <br>
+                    <input id="dob" class="border-[1px]  rounded-[10px] h-[55px] w-[400px] pl-[15px] text-[25px] cursor-pointer bg-white/50 backdrop-blur-lg border-white/10 shadow-xl" type="date" placeholder="">
+                </div> <br><br>
+
+                <div class="flex justify-center ">
+                    <button onclick="calculateAge()" class="border-[1px] border-orange-500 rounded-[50px] text-[30px] font-bold px-[55px] py-[10px] uppercase text-blue-600  opacity-[80%] active:bg-white active:text-orange-500 cursor-pointer bg-white  hover:bg-blue-600 hover:text-white">Submit</button>
+                </div>
+
+            </div>
+
+            <div class="flex flex-col border-[1px] border-gray-300 w-[500px] h-[220px] rounded-[40px] bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 p-[30px]">
+
+                <div class="flex justify-center items-center flex-col gap-[20px]">
+
+                    <h1 class="text-[40px] font-[800] text-orange-500">Calculated Age</h1>
+                    <div id="result" class="border-[1px]  w-[300px] h-[50px] rounded-[50px] cursor-pointer flex justify-center items-center text-[25px] font-bold text-orange-400 bg-white/50 backdrop-blur-lg border-white/10 shadow-xl"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    
+    <script src="./file.js"></script>
+</body>
+</html>
