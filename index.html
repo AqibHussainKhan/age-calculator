@@ -1,54 +1,181 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Age Calculater</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <meta name="description" content="Calculate your age from your name and date of birth.">
+    <title>Age Calculator</title>
+    <script src="./file.js" defer></script>
+    <style>
+        * { box-sizing: border-box; }
+        :root {
+            color-scheme: light;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: #082f49;
+            background: #38bdf8;
+        }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding: 40px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(110deg, #67e8f9 0%, #38bdf8 46%, #3b82f6 100%);
+        }
+        .calculator {
+            width: min(100%, 550px);
+            padding: 20px;
+            display: grid;
+            gap: 22px;
+            border: 1px solid rgba(255,255,255,.55);
+            border-radius: 40px;
+            background: rgba(255,255,255,.28);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            box-shadow: 0 24px 60px rgba(3,105,161,.2);
+        }
+        .panel {
+            min-width: 0;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,.6);
+            border-radius: 30px;
+            background: linear-gradient(110deg, rgba(103,232,249,.9), rgba(56,189,248,.85) 45%, rgba(59,130,246,.9));
+        }
+        .form-panel { display: grid; gap: 28px; }
+        .field { min-width: 0; display: grid; gap: 10px; }
+        .field label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: clamp(20px, 4.8vw, 27px);
+            font-weight: 750;
+            line-height: 1.3;
+            letter-spacing: -.025em;
+        }
+        .field svg { width: 30px; height: 30px; flex: 0 0 30px; }
+        input {
+            display: block;
+            width: 100%;
+            min-width: 0;
+            min-height: 56px;
+            border: 1px solid rgba(255,255,255,.35);
+            border-radius: 12px;
+            padding: 10px 15px;
+            background: rgba(255,255,255,.58);
+            box-shadow: 0 8px 20px rgba(2,132,199,.1);
+            color: #082f49;
+            font: inherit;
+            font-size: 21px;
+        }
+        input::placeholder { color: #42758b; opacity: 1; }
+        input:focus-visible, button:focus-visible {
+            outline: 3px solid #075985;
+            outline-offset: 3px;
+        }
+        input[aria-invalid="true"] { border: 2px solid #9f1239; }
+        .submit {
+            justify-self: center;
+            width: min(100%, 270px);
+            min-height: 62px;
+            padding: 12px 26px;
+            border: 1px solid #f97316;
+            border-radius: 50px;
+            background: rgba(255,255,255,.92);
+            color: #1769e8;
+            font: inherit;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: .03em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background-color .2s ease, color .2s ease, transform .2s ease;
+        }
+        .submit:hover { background: #2563eb; color: #fff; }
+        .submit:active { transform: translateY(1px); }
+        .form-message {
+            margin: -10px 0 0;
+            padding: 10px 12px;
+            border: 1px solid #fda4af;
+            border-radius: 12px;
+            background: #fff1f2;
+            color: #9f1239;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+        .result-panel { text-align: center; }
+        .result-panel h1 {
+            margin: 0 0 20px;
+            color: #bc4400;
+            font-size: clamp(27px, 6vw, 36px);
+            font-weight: 800;
+            letter-spacing: -.025em;
+        }
+        #result {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 78px;
+            border: 1px solid rgba(255,255,255,.45);
+            border-radius: 24px;
+            padding: 14px 18px;
+            background: rgba(255,255,255,.62);
+            color: #075985;
+            font-size: 17px;
+            font-weight: 500;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+        #result[data-state="ready"] { font-size: 23px; font-weight: 750; }
+        [hidden] { display: none !important; }
+        @media (max-width: 480px) {
+            body { padding: 24px 12px; }
+            .calculator { padding: 14px; gap: 16px; border-radius: 30px; }
+            .panel { padding: 22px 18px; border-radius: 23px; }
+            .form-panel { gap: 24px; }
+            input { font-size: 18px; padding-inline: 12px; }
+            .submit { font-size: 23px; }
+            #result[data-state="ready"] { font-size: 20px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .submit { transition: none; }
+        }
+    </style>
 </head>
 <body>
-
-    <div class="flex justify-center items-center py-[50px] bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500">
-
-        <div class="flex flex-col border-[1px] border-gray-200 w-[550px] h-[800px] p-[20px] gap-[30px] rounded-[40px] bg-white/30 backdrop-blur-lg border-white/40 shadow-2xl">
-
-            <div class="flex flex-col border-[1px] border-gray-300 w-[500px] h-[500px] rounded-[40px] bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 p-[30px]">
-
-                <div class="">
-                    
-                    <div>
-                        <h1 class="flex items-center gap-2 text-[30px] font-bold">
-                            <img src="usericon.png" alt="User Icon" style="height: 35px; width: 35px;"> Enter Name </h1>
-                            <input id="name" class="border-[1px] rounded-[10px] h-[55px] w-[400px] pl-[15px] text-[25px] cursor-pointer bg-white/50 backdrop-blur-lg border-white/10 shadow-xl" type="text" placeholder="Name">
-                        </div> <br><br>
-
-                        <div>
-                            <h1 class="flex items-center gap-2 text-[30px] font-bold">
-                                <img src="birthdayicon.png" alt="Birthday Icon" style="height: 35px; width: 35px;"> Enter Date of Birth </h1>
-                                <input id="dob" class="border-[1px] rounded-[10px] h-[55px] w-[400px] pl-[15px] text-[25px] cursor-pointer bg-white/50 backdrop-blur-lg border-white/10 shadow-xl" type="date">
-                        </div> <br><br>
-
-                <div class="flex justify-center ">
-                    <button onclick="calculateAge()" class="border-[1px] border-orange-500 rounded-[50px] text-[30px] font-bold px-[55px] py-[10px] uppercase text-blue-600  opacity-[80%] active:bg-white active:text-orange-500 cursor-pointer bg-white  hover:bg-blue-600 hover:text-white">Submit</button>
-                </div>
-
+    <main class="calculator" aria-label="Age calculator">
+        <form id="age-form" class="panel form-panel" novalidate>
+            <div class="field">
+                <label for="name">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="7" r="4"></circle>
+                        <path d="M4 21v-2a8 8 0 0 1 16 0v2Z"></path>
+                    </svg>
+                    Enter Name
+                </label>
+                <input id="name" name="name" type="text" autocomplete="name" maxlength="80" placeholder="Name" required aria-describedby="form-message">
             </div>
 
-            <div class="flex flex-col border-[1px] border-gray-300 w-[500px] h-[220px] rounded-[40px] bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 p-[30px]">
-
-                <div class="flex justify-center items-center flex-col gap-[20px]">
-
-                    <h1 class="text-[40px] font-[800] text-orange-500">Calculated Age</h1>
-                    <div id="result" class="border-[1px]  w-[300px] h-[50px] rounded-[50px] cursor-pointer flex justify-center items-center text-[25px] font-bold text-orange-400 bg-white/50 backdrop-blur-lg border-white/10 shadow-xl"></div>
-
-                </div>
-
+            <div class="field">
+                <label for="dob">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M5 10h14a2 2 0 0 1 2 2v9H3v-9a2 2 0 0 1 2-2Z"></path>
+                        <path d="M3 15c1 0 1 2 3 2s2-2 3-2 1 2 3 2 2-2 3-2 1 2 3 2 2-2 3-2M7 10V7m5 3V7m5 3V7M7 4V2m5 2V2m5 2V2"></path>
+                    </svg>
+                    Enter Date of Birth
+                </label>
+                <input id="dob" name="dob" type="date" required aria-describedby="form-message">
             </div>
 
-        </div>
+            <button class="submit" type="submit">Submit</button>
+            <p id="form-message" class="form-message" role="alert" hidden></p>
+        </form>
 
-    </div>
-    
-    <script src="./file.js"></script>
+        <section class="panel result-panel" aria-labelledby="result-heading">
+            <h1 id="result-heading">Calculated Age</h1>
+            <div id="result" role="status" aria-live="polite" data-state="empty">Your age will appear here.</div>
+        </section>
+    </main>
 </body>
 </html>
